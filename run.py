@@ -13,7 +13,13 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print(f'Logged in as {bot.user.name} ({bot.user.id})')
 
-@bot.command()
+    try:
+        synced = await bot.tree.sync()
+        print(f'Synced {len(synced)} command(s)')
+    except Exception as e:
+        print(f'Failed to sync commands: {e}')
+
+@bot.tree.command(name="ping", description="Replies with Pong!")
 async def ping(ctx):
     await ctx.send('Pong!')
 
